@@ -1,2 +1,2 @@
 # currency-converter-python
-Currency converter | US - EU | with PySide
+Currency converter with PySide2
