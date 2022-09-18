@@ -10,6 +10,7 @@ class App(QtWidgets.QWidget):
         self.setWindowTitle("Currency converter")
         self.setup_ui()
         self.set_default_values()
+        self.setup_css()
         self.setup_connections()
 
     def setup_ui(self):
@@ -50,13 +51,25 @@ class App(QtWidgets.QWidget):
         self.spn_montant.valueChanged.connect(self.compute)
         self.btn_inverser.clicked.connect(self.inverser_devise)
 
+
+    def setup_css(self):
+        self.setStyleSheet("""
+        background-color : rgb(44, 54, 57);
+        color: white;
+        border: none;
+        """)
+
     def compute(self):
         montant = self.spn_montant.value()
         devise_from = self.cbb_devisesFrom.currentText()
         devise_to = self.cbb_devisesTo.currentText()
-        resultat = self.c.convert(montant, devise_from, devise_to)
 
-        self.spn_montantConverti.setValue(resultat)
+        try:
+            resultat = self.c.convert(montant, devise_from, devise_to)
+        except currency_converter.currency_converter.RateNotFoundError:
+            print("Erreur de conversion")
+        else:
+            self.spn_montantConverti.setValue(resultat)
 
 
     def inverser_devise(self):
